@@ -32,3 +32,24 @@ desktop.ini
 build/
 dist/
 *.whl
+
+# Modelos IA
+*.keras
+*.h5
+*.pt
+*.pth
+
+# Datos entrenamiento
+*.npy
+dataset/
+datasets/
+
+# Media
+*.mp4
+*.avi
+*.gif
+
+# Modelos y salidas
+models/
+outputs/
+runs/
