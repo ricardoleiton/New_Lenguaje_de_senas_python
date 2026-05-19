@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "permisos_disponibles": [
+    "capturar",
+    "entrenar",
+    "predecir",
+    "gestionar_usuarios"
+  ],
+  "roles": {
+    "estudiante": {
+      "descripcion": "Solo uso de la predicción en tiempo real",
+      "permisos": ["predecir"]
+    },
+    "profesor": {
+      "descripcion": "Acceso completo: captura, entrenamiento, predicción y gestión de usuarios",
+      "permisos": ["capturar", "entrenar", "predecir", "gestionar_usuarios"]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Runtime - Lengua de Senas v0.2.0
+# Matriz de compatibilidad verificada en Python 3.11 / Windows.
+# IMPORTANTE: NO modificar versiones sin re-validar la cadena completa.
+# tensorflow 2.15 + mediapipe 0.10.14 + numpy<2 + protobuf<5 son interdependientes.
+
+numpy==1.26.4
+ml-dtypes==0.3.2
+tensorflow==2.15.1
+protobuf>=4.25.3,<5
+mediapipe==0.10.14
+opencv-python~=4.9
+scikit-learn~=1.4
+pillow~=10.0
+bcrypt~=4.1

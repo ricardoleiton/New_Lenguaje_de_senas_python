@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lengua-senas"
+version = "0.2.0"
+description = "Reconocimiento de lengua de señas con GUI, MediaPipe Holistic y LSTM"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Ricardo Leitón" },
+]
+keywords = ["sign-language", "mediapipe", "lstm", "computer-vision", "tensorflow", "holistic"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "opencv-python~=4.9",
+    "mediapipe~=0.10",
+    "numpy<2",
+    "tensorflow~=2.15",
+    "scikit-learn~=1.4",
+    "pillow~=10.0",
+    "bcrypt~=4.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/ricardoleiton/Lenguaje_de_senas_python"
