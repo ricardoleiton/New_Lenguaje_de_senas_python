@@ -22,6 +22,7 @@ from core.landmarks import (
     normalize_landmarks,
     validate_landmarks,
 )
+from services.capture_protocol import get_capture_protocol
 from vision import overlay
 from vision.camera import (
     draw_holistic_landmarks,
@@ -81,6 +82,29 @@ def imprimir_clases_capturadas() -> None:
             ("Palabras", palabras or "-"),
         ]
     )
+
+
+def imprimir_protocolo_captura() -> None:
+    """Muestra el protocolo formal vigente antes de capturar."""
+    protocol = get_capture_protocol()
+    ui.section("Protocolo formal de captura")
+    ui.info(protocol.objetivo)
+    ui.metric_rows(
+        [
+            ("Secuencias", config.SEQUENCES_PER_CLASS),
+            ("Frames válidos", config.FRAMES_PER_SEQUENCE),
+            ("Cuenta regresiva", f"{config.CAPTURE_COUNTDOWN_SECONDS} segundos"),
+        ]
+    )
+    ui.section("Preparación")
+    for item in protocol.preparacion:
+        ui.muted(f"- {item}")
+    ui.section("Durante la captura")
+    for item in protocol.ejecucion:
+        ui.muted(f"- {item}")
+    ui.section("Repetir la toma si")
+    for item in protocol.criterios_repeticion:
+        ui.muted(f"- {item}")
 
 
 def _esperar_confirmacion(cap, holistic, tipo: str, clase: str) -> bool:
@@ -218,6 +242,7 @@ def ejecutar_captura(
             ("Frames por sec.", config.FRAMES_PER_SEQUENCE),
         ]
     )
+    imprimir_protocolo_captura()
 
     existentes = [f for f in os.listdir(carpeta_clase) if f.endswith(".npy")]
     if existentes:

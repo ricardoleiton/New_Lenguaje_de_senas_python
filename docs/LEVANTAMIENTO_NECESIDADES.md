@@ -116,15 +116,17 @@ Los requerimientos de usuario describen necesidades desde el punto de vista de q
 | RU-04 | Como profesor, quiero ver qué clases ya fueron capturadas antes de capturar una nueva. |
 | RU-05 | Como profesor, quiero una cuenta regresiva antes de capturar para acomodarme frente a la cámara. |
 | RU-06 | Como profesor, quiero sobrescribir datos existentes solo con confirmación. |
-| RU-07 | Como profesor, quiero entrenar el modelo desde la aplicación. |
-| RU-08 | Como usuario, quiero seleccionar la cámara si el equipo tiene más de una. |
-| RU-09 | Como usuario, quiero ejecutar predicción en tiempo real desde una interfaz gráfica. |
-| RU-10 | Como usuario, quiero ver la cámara y la referencia guardada en ventanas separadas y ordenadas. |
-| RU-11 | Como usuario, quiero que la predicción muestre la clase detectada y su confianza. |
-| RU-12 | Como profesor, quiero gestionar usuarios, roles y contraseñas. |
-| RU-13 | Como usuario, quiero cambiar mi propia contraseña. |
-| RU-14 | Como responsable del sistema, quiero que las acciones relevantes queden registradas. |
-| RU-15 | Como usuario no técnico, quiero abrir la aplicación sin escribir comandos. |
+| RU-07 | Como profesor, quiero ver un protocolo formal antes de capturar para mantener calidad del dataset. |
+| RU-08 | Como profesor, quiero entrenar el modelo desde la aplicación. |
+| RU-09 | Como profesor, quiero seleccionar qué versión entrenada del modelo queda activa. |
+| RU-10 | Como usuario, quiero seleccionar la cámara si el equipo tiene más de una. |
+| RU-11 | Como usuario, quiero ejecutar predicción en tiempo real desde una interfaz gráfica. |
+| RU-12 | Como usuario, quiero ver la cámara y la referencia guardada en ventanas separadas y ordenadas. |
+| RU-13 | Como usuario, quiero que la predicción muestre la clase detectada y su confianza. |
+| RU-14 | Como profesor, quiero gestionar usuarios, roles y contraseñas. |
+| RU-15 | Como usuario, quiero cambiar mi propia contraseña. |
+| RU-16 | Como responsable del sistema, quiero que las acciones relevantes queden registradas. |
+| RU-17 | Como usuario no técnico, quiero abrir la aplicación sin escribir comandos. |
 
 ## 6. Requerimientos del sistema
 
@@ -142,16 +144,17 @@ Los requerimientos del sistema describen capacidades técnicas necesarias para s
 | RS-08 | El sistema debe capturar 10 secuencias por clase. |
 | RS-09 | El sistema debe guardar secuencias en `data/secuencias/<clase>/`. |
 | RS-10 | El sistema debe generar un GIF de referencia por clase capturada. |
-| RS-11 | El sistema debe entrenar un modelo LSTM con TensorFlow/Keras. |
-| RS-12 | El sistema debe guardar modelo, etiquetas e historia de entrenamiento. |
-| RS-13 | El sistema debe cargar el modelo entrenado para predicción. |
-| RS-14 | El sistema debe validar incompatibilidades entre frames configurados y modelo entrenado. |
-| RS-15 | El sistema debe implementar autenticación con usuarios locales. |
-| RS-16 | El sistema debe guardar contraseñas con bcrypt, nunca en texto plano. |
-| RS-17 | El sistema debe aplicar RBAC según `config/roles.json`. |
-| RS-18 | El sistema debe registrar eventos auditables en `logs/audit.log`. |
-| RS-19 | El sistema debe permitir descubrir y seleccionar cámaras disponibles. |
-| RS-20 | El sistema debe funcionar sin conexión a internet durante el uso normal. |
+| RS-11 | El sistema debe mostrar un protocolo formal de captura antes de iniciar el proceso. |
+| RS-12 | El sistema debe entrenar un modelo LSTM con TensorFlow/Keras. |
+| RS-13 | El sistema debe guardar modelo, etiquetas, historia y metadata de entrenamiento. |
+| RS-14 | El sistema debe cargar el modelo entrenado para predicción. |
+| RS-15 | El sistema debe validar incompatibilidades entre frames configurados y modelo entrenado. |
+| RS-16 | El sistema debe implementar autenticación con usuarios locales. |
+| RS-17 | El sistema debe guardar contraseñas con bcrypt, nunca en texto plano. |
+| RS-18 | El sistema debe aplicar RBAC según `config/roles.json`. |
+| RS-19 | El sistema debe registrar eventos auditables en `logs/audit.log`. |
+| RS-20 | El sistema debe permitir descubrir y seleccionar cámaras disponibles. |
+| RS-21 | El sistema debe funcionar sin conexión a internet durante el uso normal. |
 
 ## 7. Alcance funcional
 
@@ -166,6 +169,7 @@ El alcance actual incluye:
 - Cambio de contraseña propia.
 - Captura de letras, números y palabras completas.
 - Resumen de clases ya capturadas.
+- Protocolo formal de captura visible antes de capturar.
 - Cuenta regresiva inicial antes de capturar.
 - Captura de 10 secuencias por clase, 10 frames por secuencia.
 - Generación de GIF de referencia.
@@ -216,17 +220,19 @@ Queda fuera del alcance actual:
 | RF-07 | El sistema debe permitir capturar una palabra completa. |
 | RF-08 | El sistema debe listar letras, números y palabras ya capturados. |
 | RF-09 | El sistema debe pedir confirmación antes de sobrescribir datos existentes. |
-| RF-10 | El sistema debe mostrar cuenta regresiva antes de comenzar la captura. |
-| RF-11 | El sistema debe guardar secuencias capturadas en formato `.npy`. |
-| RF-12 | El sistema debe generar un GIF de referencia de la primera secuencia. |
-| RF-13 | El sistema debe permitir entrenar el modelo con los datos disponibles. |
-| RF-14 | El sistema debe mostrar métricas de validación y test cuando corresponda. |
-| RF-15 | El sistema debe guardar `modelo_lstm.h5`, `etiquetas.pkl` y `history.json`. |
-| RF-16 | El sistema debe permitir predicción en tiempo real. |
-| RF-17 | El sistema debe mostrar la clase detectada y su confianza. |
-| RF-18 | El sistema debe mostrar el GIF de referencia cuando exista detección. |
-| RF-19 | El sistema debe permitir gestionar usuarios desde rol profesor. |
-| RF-20 | El sistema debe registrar eventos de login, logout, captura, entrenamiento, predicción y gestión. |
+| RF-10 | El sistema debe mostrar el protocolo formal de captura. |
+| RF-11 | El sistema debe mostrar cuenta regresiva antes de comenzar la captura. |
+| RF-12 | El sistema debe guardar secuencias capturadas en formato `.npy`. |
+| RF-13 | El sistema debe generar un GIF de referencia de la primera secuencia. |
+| RF-14 | El sistema debe permitir entrenar el modelo con los datos disponibles. |
+| RF-15 | El sistema debe mostrar métricas de validación y test cuando corresponda. |
+| RF-16 | El sistema debe guardar `modelo_lstm.h5`, `etiquetas.pkl`, `history.json` y una copia versionada por entrenamiento. |
+| RF-17 | El sistema debe permitir activar una versión histórica del modelo. |
+| RF-18 | El sistema debe permitir predicción en tiempo real. |
+| RF-19 | El sistema debe mostrar la clase detectada y su confianza. |
+| RF-20 | El sistema debe mostrar el GIF de referencia cuando exista detección. |
+| RF-21 | El sistema debe permitir gestionar usuarios desde rol profesor. |
+| RF-22 | El sistema debe registrar eventos de login, logout, captura, entrenamiento, predicción y gestión. |
 
 ### Requisitos no funcionales
 
@@ -259,6 +265,7 @@ El sistema está organizado por dominios:
 - `gui_app.py`: entrada de arranque de la interfaz gráfica.
 - `gui/`: implementación modular de la GUI por aplicación, tema, salida y pantallas.
 - `services/`: servicios reutilizables para captura, entrenamiento y predicción.
+- `docs/PROTOCOLO_CAPTURA.md`: procedimiento formal para capturar dataset.
 - `workflows/`: orquestación con sesión, permisos y menú.
 - `main.py`: alternativa de consola.
 
@@ -272,6 +279,7 @@ Usuario → GUI/CLI → workflow → cámara/modelo/dataset → resultado visual
 
 ```text
 selección de clase
+→ revisión del protocolo formal
 → selección/uso de cámara
 → confirmación con C
 → cuenta regresiva de 5 segundos
@@ -344,9 +352,10 @@ La predicción usa:
 
 - Dataset: `data/secuencias/<clase>/<clase>_<i>.npy`
 - GIFs: `gifs/<clase>.gif`
-- Modelo: `models/modelo_lstm.h5`
-- Etiquetas: `models/etiquetas.pkl`
-- Historia: `models/history.json`
+- Modelo activo: `models/modelo_lstm.h5`
+- Etiquetas activas: `models/etiquetas.pkl`
+- Historia activa: `models/history.json`
+- Versiones históricas: `models/versions/<timestamp>/`
 - Logs: `logs/audit.log`
 
 ## 10. Desarrollo

@@ -27,6 +27,12 @@ from core.config import config
 from core import ui
 from ml.data_io import DatasetError, cargar_datos
 from ml.model import construir_modelo
+from services.model_registry import (
+    ensure_model_version_dir,
+    generar_model_version_id,
+    write_json,
+    write_latest_model_version,
+)
 
 tf.get_logger().setLevel("ERROR")
 
@@ -102,6 +108,8 @@ def entrenar_modelo(username: str = "sistema") -> bool:
     )
 
     os.makedirs(config.MODELS_DIR, exist_ok=True)
+    version_id = generar_model_version_id()
+    version_paths = ensure_model_version_dir(version_id)
     callbacks = [
         EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True),
         ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=5),
@@ -140,9 +148,12 @@ def entrenar_modelo(username: str = "sistema") -> bool:
         cm = confusion_matrix(y_test, test_pred).tolist()
         ui.info(f"Matriz de confusión (test): {cm}")
 
-    # Persistencia
+    # Persistencia: archivos activos para compatibilidad + carpeta versionada.
     modelo.save(config.MODEL_PATH)
+    modelo.save(version_paths["model"])
     with open(config.LABELS_PATH, "wb") as f:
+        pickle.dump(etiquetas, f)
+    with open(version_paths["labels"], "wb") as f:
         pickle.dump(etiquetas, f)
 
     history_serializable = {
@@ -150,16 +161,43 @@ def entrenar_modelo(username: str = "sistema") -> bool:
     }
     with open(config.HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history_serializable, f, indent=2)
+    write_json(version_paths["history"], history_serializable)
 
     epochs_corridas = len(history.history.get("loss", []))
+    metadata = {
+        "version_id": version_id,
+        "created_by": username,
+        "classes": etiquetas,
+        "class_count": len(etiquetas),
+        "sample_count": int(len(X)),
+        "frames_per_sequence": config.FRAMES_PER_SEQUENCE,
+        "features": config.FEATURES,
+        "epochs": epochs_corridas,
+        "active_paths": {
+            "model": config.MODEL_PATH,
+            "labels": config.LABELS_PATH,
+            "history": config.HISTORY_PATH,
+        },
+        "version_paths": {
+            "model": version_paths["model"],
+            "labels": version_paths["labels"],
+            "history": version_paths["history"],
+            "metadata": version_paths["metadata"],
+        },
+    }
+    write_json(version_paths["metadata"], metadata)
+    write_latest_model_version(metadata)
+
     log_event(
         username,
         "train_finish",
-        f"clases={len(etiquetas)} epochs={epochs_corridas}",
+        f"version={version_id} clases={len(etiquetas)} epochs={epochs_corridas}",
     )
 
     ui.section("Archivos generados")
+    ui.success(f"Versión: {version_id}")
     ui.success(f"Modelo: {config.MODEL_PATH}")
     ui.success(f"Etiquetas: {config.LABELS_PATH}")
     ui.success(f"Historia: {config.HISTORY_PATH}")
+    ui.success(f"Carpeta versionada: {version_paths['dir']}")
     return True

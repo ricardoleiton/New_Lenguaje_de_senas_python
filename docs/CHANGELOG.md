@@ -20,6 +20,13 @@ y siguiendo [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   y pantallas.
 - Paquete `services/` para separar servicios de captura, entrenamiento y
   predicción de la capa de workflows.
+- Registro de versiones de modelos entrenados en `models/versions/<timestamp>/`
+  con metadata y puntero `latest_model_version.json`.
+- Protocolo formal de captura documentado y visible antes de iniciar capturas.
+- Vista previa de cámara en la pantalla de selección para identificar el
+  dispositivo correcto antes de guardar.
+- Pantalla **Seleccionar modelo** para activar una versión entrenada anterior
+  desde la GUI.
 
 ### Cambiado
 - Captura reducida a 10 secuencias por clase y 10 frames por secuencia.
@@ -29,6 +36,8 @@ y siguiendo [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `gui_app.py` quedó como entrada liviana compatible con el launcher existente.
 - Workflows de captura, entrenamiento y predicción reducidos a sesión, permisos
   y delegación a servicios.
+- Entrenamiento conserva los artefactos activos existentes y además guarda una
+  copia versionada por corrida.
 - README y documentación actualizados para reflejar el flujo con GUI.
 
 ### Documentación

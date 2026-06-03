@@ -11,9 +11,16 @@ from services.capture_service import (
     clases_capturadas,
     ejecutar_captura as ejecutar_captura_servicio,
     imprimir_clases_capturadas,
+    imprimir_protocolo_captura,
 )
 
-__all__ = ["clases_capturadas", "ejecutar_captura", "imprimir_clases_capturadas", "main"]
+__all__ = [
+    "clases_capturadas",
+    "ejecutar_captura",
+    "imprimir_clases_capturadas",
+    "imprimir_protocolo_captura",
+    "main",
+]
 
 
 def ejecutar_captura(tipo: str, clase: str, sobrescribir: bool = False) -> bool:
@@ -80,6 +87,7 @@ def main() -> None:
         "Captura de letras, números y palabras",
         "MediaPipe Holistic + dataset local",
     )
+    imprimir_protocolo_captura()
     seleccion = _seleccionar_clase()
     if seleccion is None:
         ui.warning("Captura cancelada.")

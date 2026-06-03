@@ -13,6 +13,7 @@ from gui.screens.auth import AuthScreenMixin
 from gui.screens.camera import CameraScreenMixin
 from gui.screens.capture import CaptureScreenMixin
 from gui.screens.dashboard import DashboardScreenMixin
+from gui.screens.model_versions import ModelVersionsScreenMixin
 from gui.screens.password import PasswordScreenMixin
 from gui.screens.process import ProcessScreenMixin
 from gui.screens.users import UsersScreenMixin
@@ -26,6 +27,7 @@ class App(
     CameraScreenMixin,
     CaptureScreenMixin,
     ProcessScreenMixin,
+    ModelVersionsScreenMixin,
     UsersScreenMixin,
     PasswordScreenMixin,
     tk.Tk,
@@ -56,6 +58,9 @@ class App(
         setup_style(ttk.Style())
 
     def _clear(self) -> None:
+        stop_camera_preview = getattr(self, "_stop_camera_preview", None)
+        if callable(stop_camera_preview):
+            stop_camera_preview()
         for child in self.container.winfo_children():
             child.destroy()
 

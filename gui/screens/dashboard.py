@@ -27,6 +27,7 @@ class DashboardScreenMixin:
             ("Seleccionar cámara", "Detectá cámaras instaladas y elegí cuál usar.", "predecir", self.show_camera_settings),
             ("Capturar gesto", "Elegí letra, número o palabra y grabá las secuencias con cámara.", "capturar", self.show_capture),
             ("Entrenar modelo", "Reentrená el LSTM con el dataset disponible.", "entrenar", self.run_training),
+            ("Seleccionar modelo", "Elegí qué versión entrenada se usará para predecir.", "entrenar", self.show_model_versions),
             ("Predicción en tiempo real", "Abrí la cámara y detectá gestos con el modelo actual.", "predecir", self.run_prediction),
             ("Gestionar usuarios", "Crear, eliminar y cambiar roles o contraseñas.", "gestionar_usuarios", self.show_users),
         ]

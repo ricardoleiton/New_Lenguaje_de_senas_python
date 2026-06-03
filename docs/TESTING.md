@@ -6,9 +6,9 @@
 ## Objetivo
 
 Esta suite agrega una primera red de seguridad para las partes más sensibles del
-proyecto: permisos, usuarios, dataset, landmarks y estructura de capas. Está
-pensada para ejecutarse sin cámara, sin abrir ventanas y sin entrenar
-TensorFlow.
+proyecto: permisos, usuarios, dataset, landmarks, protocolo de captura,
+versionado de modelos y estructura de capas. Está pensada para ejecutarse sin
+cámara, sin abrir ventanas y sin entrenar TensorFlow.
 
 Se usa `unittest`, incluido en la librería estándar de Python, para evitar sumar
 dependencias nuevas.
@@ -102,6 +102,23 @@ Valida la separación workflow/servicio:
 
 Es una prueba estructural liviana para sostener la arquitectura sin cámara ni
 TensorFlow real.
+
+### `tests/test_model_registry.py`
+
+Valida el registro de versiones de modelos:
+
+- formato del identificador temporal `YYYYMMDD_HHMMSS`;
+- creación de carpetas `models/versions/<version_id>/`;
+- rutas esperadas de modelo, etiquetas, historia y metadata;
+- escritura y lectura del puntero `latest_model_version.json`;
+- listado y activación de una versión entrenada.
+
+### `tests/test_capture_protocol.py`
+
+Valida el protocolo formal de captura:
+
+- existencia de objetivo, preparación, ejecución, calidad y repetición;
+- resumen operativo con secuencias, frames y cuenta regresiva.
 
 ## Qué no cubre todavía
 

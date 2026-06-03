@@ -27,6 +27,7 @@ from core.landmarks import (
     normalize_landmarks,
     validate_landmarks,
 )
+from services.model_registry import read_latest_model_version
 from vision import overlay
 from vision.camera import (
     draw_holistic_landmarks,
@@ -117,9 +118,12 @@ def ejecutar_prediccion(username: str = "sistema") -> bool:
         return False
     with open(config.LABELS_PATH, "rb") as f:
         etiquetas = pickle.load(f)
+    latest_metadata = read_latest_model_version()
+    version_id = latest_metadata["version_id"] if latest_metadata else "sin versionar"
     ui.metric_rows(
         [
             ("Modelo", config.MODEL_PATH),
+            ("Versión", version_id),
             ("Clases", ", ".join(etiquetas)),
             ("Confianza mín.", f"{config.PREDICTION_CONFIDENCE_THRESHOLD:.0%}"),
         ]

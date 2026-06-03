@@ -54,8 +54,10 @@ Lenguaje_de_senas_python/
 │
 ├── services/                # Servicios operativos reutilizables
 │   ├── capture_service.py   #   captura webcam -> .npy + .gif
+│   ├── capture_protocol.py  #   protocolo formal de captura
 │   ├── training_service.py  #   entrenamiento + métricas + persistencia
-│   └── prediction_service.py #  predicción en vivo + panel de referencia
+│   ├── prediction_service.py #  predicción en vivo + panel de referencia
+│   └── model_registry.py    #   versionado de modelos entrenados
 │
 ├── workflows/               # Orquestación, sesión y permisos
 │   ├── capturar.py
@@ -69,7 +71,7 @@ Lenguaje_de_senas_python/
 │
 ├── data/secuencias/<clase>/ # Dataset: .npy de (10, 147) por muestra
 ├── gifs/<clase>.gif         # GIF de referencia por clase
-├── models/                  # modelo_lstm.h5 + etiquetas.pkl + history.json
+├── models/                  # modelo activo + versiones de entrenamiento
 ├── logs/audit.log           # Auditoría (gitignored)
 └── docs/                    # Documentación técnica
 ```
@@ -80,7 +82,7 @@ Lenguaje_de_senas_python/
 
 ```
 Usuario  →  workflow capturar  →  capture_service  →  cámara
-        →  MediaPipe Holistic  →  extract_landmarks(147)
+        →  protocolo formal  →  MediaPipe Holistic  →  extract_landmarks(147)
         →  normalize  →  validate  →  cuenta regresiva inicial
         →  buffer 10 frames × 10 secuencias por clase
         →  np.save(data/secuencias/<clase>/<clase>_<i>.npy)
@@ -98,6 +100,8 @@ workflow entrenar  →  training_service  →  cargar_datos
         →  fit + EarlyStopping + ReduceLROnPlateau + ModelCheckpoint
         →  classification_report + matriz de confusión
         →  save modelo_lstm.h5 + etiquetas.pkl + history.json
+        →  save models/versions/<timestamp>/{modelo, etiquetas, history, metadata}
+        →  update latest_model_version.json
 ```
 
 ### 3.3. Predicción (workflow `predecir`)
@@ -113,6 +117,18 @@ workflow predecir  →  prediction_service  →  cámara
 
 La predicción abre dos ventanas desde el inicio: cámara en vivo y referencia
 guardada. El panel de referencia permanece vacío hasta que se detecta una clase.
+Si existe `latest_model_version.json`, la predicción informa la versión activa
+del modelo cargado.
+
+### 3.6. Selección de modelo activo
+
+```
+GUI profesor  →  list_model_versions()
+              →  elegir versión
+              →  activate_model_version(version_id)
+              →  copiar artefactos a modelo_lstm.h5 + etiquetas.pkl + history.json
+              →  update latest_model_version.json
+```
 
 ### 3.4. Selección de cámara
 
@@ -159,6 +175,13 @@ Ver `docs/ROLES.md` para el detalle de cómo agregar un rol nuevo.
 - **Servicios operativos separados**: `services/` contiene la lógica de
   captura, entrenamiento y predicción; `workflows/` conserva sesión, permisos y
   orquestación de menú. Esto evita mezclar reglas de acceso con procesamiento.
+- **Versionado de modelos**: cada entrenamiento exitoso actualiza los artefactos
+  activos para predicción y guarda una copia histórica bajo `models/versions/`.
+  La metadata permite auditar clases, muestras, frames y usuario que entrenó.
+- **Activación explícita de modelo**: la predicción siempre usa los artefactos
+  activos; la GUI permite elegir qué versión histórica se copia a esos archivos.
+- **Protocolo formal de captura**: `services.capture_protocol` centraliza las
+  reglas operativas y `docs/PROTOCOLO_CAPTURA.md` documenta el procedimiento.
 - **`core.config.config` como singleton inmutable** (`@dataclass(frozen=True)`):
   cualquier override pasa por código, no por mutación en runtime.
 - **Defense in depth**: cada workflow llama `requerir(permiso, rol)` al inicio,

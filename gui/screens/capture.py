@@ -9,6 +9,7 @@ from tkinter import messagebox, ttk
 
 from core.config import config
 from gui.theme import SURFACE
+from services.capture_protocol import protocol_summary_lines
 
 
 class CaptureScreenMixin:
@@ -30,6 +31,16 @@ class CaptureScreenMixin:
         ttk.Label(summary, text=f"Letras: {letters}", style="CardText.TLabel", wraplength=900).pack(anchor="w", pady=(8, 2))
         ttk.Label(summary, text=f"Números: {numbers}", style="CardText.TLabel", wraplength=900).pack(anchor="w", pady=(0, 2))
         ttk.Label(summary, text=f"Palabras: {words}", style="CardText.TLabel", wraplength=900).pack(anchor="w")
+
+        protocol = self._card(self.container)
+        ttk.Label(protocol, text="Protocolo formal de captura", style="CardTitle.TLabel").pack(anchor="w")
+        for line in protocol_summary_lines():
+            ttk.Label(
+                protocol,
+                text=f"- {line}",
+                style="CardText.TLabel",
+                wraplength=900,
+            ).pack(anchor="w", pady=(6, 0))
 
         card = self._card(self.container)
         capture_type = tk.StringVar(value="letra")

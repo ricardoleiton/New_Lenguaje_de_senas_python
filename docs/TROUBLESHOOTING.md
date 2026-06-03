@@ -138,6 +138,8 @@ de TensorFlow).
 
 - `logs/audit.log` — quién hizo qué y cuándo.
 - `models/history.json` — historia de loss/accuracy del último entrenamiento.
+- `models/latest_model_version.json` — metadata de la última versión entrenada.
+- `models/versions/<timestamp>/metadata.json` — detalle histórico de una corrida.
 
 Si nada de lo de arriba ayuda, abrir un issue con: SO, versión de Python,
 versión de la app (`__version__` en `version.py`), traza completa del error.

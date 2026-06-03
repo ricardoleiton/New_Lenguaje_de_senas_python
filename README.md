@@ -67,7 +67,7 @@ Lenguaje_de_senas_python/
 │
 ├── data/secuencias/<clase>/ # Dataset .npy
 ├── gifs/<clase>.gif         # Referencia visual
-├── models/                  # modelo_lstm.h5 + etiquetas.pkl + history.json
+├── models/                  # modelo activo + versiones de entrenamiento
 ├── logs/audit.log           # Auditoría (gitignored)
 └── docs/                    # ARCHITECTURE, SECURITY, ROLES, TROUBLESHOOTING,
                              # DECISIONS, CHANGELOG, DEVELOPMENT
@@ -187,11 +187,19 @@ A partir del segundo arranque, la app pide login normal.
 - **Arquitectura:** `LSTM(64, return_sequences) → BatchNorm → LSTM(32) → Dropout(0.3) → Dense(64, relu) → Dense(N, softmax)`.
 - **Optimizador:** Adam con `EarlyStopping`, `ReduceLROnPlateau`, `ModelCheckpoint`.
 - **Split:** 70/15/15 estratificado (con fallback a 80/20 si hay pocas muestras).
+- **Versionado:** cada entrenamiento exitoso conserva una copia en
+  `models/versions/<timestamp>/`.
 
 Dataset/modelo actual: 8 clases (`1`, `2`, `a`, `b`, `c`, `d`, `hola`,
 `trabajar`) × 10 secuencias = 80 secuencias. Cada secuencia nueva guarda 10
 frames. Las capturas antiguas de 30 frames se remuestrean automáticamente a 10
 frames al entrenar.
+
+El sistema mantiene `models/modelo_lstm.h5`, `models/etiquetas.pkl` y
+`models/history.json` como artefactos activos para predicción. Además, cada
+entrenamiento guarda una versión histórica con `metadata.json` y actualiza
+`models/latest_model_version.json`. Desde el panel principal, un profesor puede
+entrar a **Seleccionar modelo** para activar una versión anterior.
 
 ---
 
@@ -211,6 +219,7 @@ Esta es la versión **0.2.0**. Histórico completo en
 |-----------|-----------|
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Estructura, capas, flujos de datos |
 | [LEVANTAMIENTO_NECESIDADES.md](docs/LEVANTAMIENTO_NECESIDADES.md) | Necesidad, problema, alcance y requisitos |
+| [PROTOCOLO_CAPTURA.md](docs/PROTOCOLO_CAPTURA.md) | Procedimiento formal para capturar dataset |
 | [SECURITY.md](docs/SECURITY.md)         | Modelo de amenazas, auth, audit |
 | [ROLES.md](docs/ROLES.md)               | Catálogo de roles y cómo escalar |
 | [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Errores comunes y soluciones |
