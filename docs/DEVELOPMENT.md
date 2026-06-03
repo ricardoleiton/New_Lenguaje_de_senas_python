@@ -39,25 +39,29 @@ inicial.
 
 ## 4. Cómo agregar un workflow nuevo
 
-1. Crear archivo en `workflows/<nombre>.py` con función `main()`.
-2. Al inicio de `main()` agregar:
+1. Si el flujo tiene lógica operativa reutilizable, crear primero un servicio en
+   `services/<nombre>_service.py`.
+2. Crear archivo en `workflows/<nombre>.py` con función `main()`.
+3. Al inicio de `main()` agregar:
    ```python
-   from auth import requerir, usuario_actual, log_event
+   from auth import requerir, usuario_actual
    user = usuario_actual()
    if user is None:
        print("❌ No hay sesión activa")
        return
    requerir("<permiso>", user.rol)
-   log_event(user.username, "<accion>_start")
    ```
-3. Sumar el permiso a `config/roles.json` (en `permisos_disponibles` y en los
+4. Delegar desde el workflow al servicio, pasando `username=user.username` si
+   el servicio registra auditoría.
+5. Sumar el permiso a `config/roles.json` (en `permisos_disponibles` y en los
    roles que correspondan).
-4. Registrar el workflow en `main.py`, lista `WORKFLOWS`:
+6. Registrar el workflow en `main.py`, lista `WORKFLOWS`:
    ```python
    ("Mi nueva opción", "<permiso>", "workflows.<nombre>"),
    ```
-5. Si corresponde a una acción de usuario final, agregar una tarjeta/botón en
-   `gui_app.py`.
+7. Si corresponde a una acción de usuario final, agregar una tarjeta/botón en
+   la pantalla correspondiente dentro de `gui/screens/`. `gui_app.py` debe
+   mantenerse como wrapper de arranque.
 
 ## 5. Cómo subir versión
 
@@ -70,30 +74,37 @@ inicial.
 
 ## 6. Política de tests
 
-Esta versión **no incluye tests automatizados** todavía (deuda técnica
-documentada en el relevamiento).
+Esta versión incluye una primera suite de tests automatizados con `unittest`.
+No requiere instalar dependencias nuevas.
 
-Cuando se agreguen, ubicarlos en `tests/`:
+Ubicación:
 
 ```
 tests/
 ├── test_landmarks.py
 ├── test_rbac.py
 ├── test_users.py
-└── test_data_io.py
+├── test_data_io.py
+├── test_gui_structure.py
+└── test_services_structure.py
 ```
 
-Recomendaciones:
+Ejecución:
 
-- `pytest` como runner.
-- Mockear `cv2.VideoCapture` y `mediapipe` (objetos pesados).
-- Usar `tmp_path` para `users.json` y `roles.json` de prueba.
+```bash
+python -m unittest discover -s tests -v
+```
+
+Detalle completo en `docs/TESTING.md`.
 
 ## 7. Sanity checks antes de commitear
 
 ```bash
 # Compilar sintácticamente todos los .py
 python -m compileall -q .
+
+# Ejecutar tests automatizados
+python -m unittest discover -s tests -v
 
 # Verificar imports (debe levantar SystemExit, no ImportError)
 python -c "from auth import login_loop; from workflows import capturar, entrenar, predecir, gestion_usuarios"
@@ -109,7 +120,8 @@ python main.py
 
 Ver `docs/ARCHITECTURE.md`. Resumen:
 
-- `auth/`, `core/`, `vision/`, `ml/`, `workflows/` → código del sistema.
+- `auth/`, `core/`, `gui/`, `services/`, `vision/`, `ml/`, `workflows/` →
+  código del sistema.
 - `config/` → roles.json (versionado) + users.json (gitignored).
 - `data/`, `gifs/`, `models/` → datos y artefactos.
 - `logs/` → audit.log (gitignored).

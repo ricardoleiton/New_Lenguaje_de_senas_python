@@ -47,7 +47,7 @@ iniciales (Profesor / Estudiante), escalables por configuración.
 ```
 Lenguaje_de_senas_python/
 ├── main.py                  # Login + menú dinámico filtrado por permisos
-├── gui_app.py               # Interfaz gráfica de escritorio
+├── gui_app.py               # Entrada de compatibilidad para la GUI
 ├── abrir_app.bat            # Launcher Windows para abrir la GUI
 ├── version.py               # __version__
 ├── pyproject.toml
@@ -58,9 +58,11 @@ Lenguaje_de_senas_python/
 │
 ├── auth/                    # Autenticación, RBAC, sesión, audit
 ├── core/                    # Configuración + procesamiento de landmarks
+├── gui/                     # App Tkinter, tema, salida y pantallas
+├── services/                # Servicios de captura, entrenamiento y predicción
 ├── vision/                  # Cámara + dibujo + GIFs
 ├── ml/                      # Modelo LSTM + carga de dataset
-├── workflows/               # capturar / entrenar / predecir / gestion_usuarios
+├── workflows/               # Permisos + orquestación CLI/GUI
 ├── config/                  # roles.json + users.json (gitignored)
 │
 ├── data/secuencias/<clase>/ # Dataset .npy
@@ -208,12 +210,14 @@ Esta es la versión **0.2.0**. Histórico completo en
 | Documento | Contenido |
 |-----------|-----------|
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Estructura, capas, flujos de datos |
+| [LEVANTAMIENTO_NECESIDADES.md](docs/LEVANTAMIENTO_NECESIDADES.md) | Necesidad, problema, alcance y requisitos |
 | [SECURITY.md](docs/SECURITY.md)         | Modelo de amenazas, auth, audit |
 | [ROLES.md](docs/ROLES.md)               | Catálogo de roles y cómo escalar |
 | [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Errores comunes y soluciones |
 | [DECISIONS.md](docs/DECISIONS.md)       | ADRs (decisiones de arquitectura) |
 | [CHANGELOG.md](docs/CHANGELOG.md)       | Histórico de versiones |
 | [DEVELOPMENT.md](docs/DEVELOPMENT.md)   | Guía para contribuir / extender |
+| [TESTING.md](docs/TESTING.md)           | Tests automatizados y cómo ejecutarlos |
 | [RELEVAMIENTO_TECNICO.md](docs/RELEVAMIENTO_TECNICO.md) | Relevamiento técnico inicial (v0.1.0) |
 
 ---

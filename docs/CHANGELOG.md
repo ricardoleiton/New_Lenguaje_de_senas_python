@@ -14,12 +14,21 @@ y siguiendo [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Resumen de letras, números y palabras ya capturados antes de capturar.
 - Cuenta regresiva inicial de 5 segundos antes de empezar el bloque de captura.
 - Predicción con dos ventanas: cámara en vivo y panel de referencia guardada.
+- Suite inicial de tests automatizados con `unittest`.
+- Documento `docs/TESTING.md` con alcance, ejecución y próximos tests sugeridos.
+- Paquete `gui/` para separar la interfaz Tkinter por aplicación, tema, salida
+  y pantallas.
+- Paquete `services/` para separar servicios de captura, entrenamiento y
+  predicción de la capa de workflows.
 
 ### Cambiado
 - Captura reducida a 10 secuencias por clase y 10 frames por secuencia.
 - El loader del dataset remuestrea secuencias antiguas a 10 frames al entrenar.
 - El modelo actual fue reentrenado con clases `1`, `2`, `a`, `b`, `c`, `d`,
   `hola`, `trabajar`.
+- `gui_app.py` quedó como entrada liviana compatible con el launcher existente.
+- Workflows de captura, entrenamiento y predicción reducidos a sesión, permisos
+  y delegación a servicios.
 - README y documentación actualizados para reflejar el flujo con GUI.
 
 ### Documentación

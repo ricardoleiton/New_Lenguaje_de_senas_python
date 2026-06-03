@@ -15,7 +15,7 @@ Funciona localmente sobre webcam, sin servicios remotos.
 ```
 Lenguaje_de_senas_python/
 ├── main.py                  # Entrada CLI: login + menú dinámico
-├── gui_app.py               # Interfaz gráfica Tkinter
+├── gui_app.py               # Entrada de compatibilidad para la GUI
 ├── abrir_app.bat            # Launcher Windows de la GUI
 ├── version.py               # Fuente única de __version__
 ├── pyproject.toml           # Metadata del proyecto
@@ -38,6 +38,12 @@ Lenguaje_de_senas_python/
 │   ├── ui.py                #   formato común de consola/logs
 │   └── landmarks.py         #   extract / normalize / validate
 │
+├── gui/                     # Interfaz gráfica Tkinter
+│   ├── app.py               #   App principal + helpers de layout
+│   ├── theme.py             #   colores, tipografía y estilos ttk
+│   ├── output.py            #   redirección stdout/stderr al panel GUI
+│   └── screens/             #   auth, dashboard, cámara, captura, procesos, usuarios
+│
 ├── vision/                  # Cámara + dibujo + GIF + overlays
 │   ├── camera.py
 │   └── overlay.py
@@ -46,7 +52,12 @@ Lenguaje_de_senas_python/
 │   ├── model.py             #   construir_modelo (LSTM)
 │   └── data_io.py           #   cargar_datos
 │
-├── workflows/               # Flujos de la app
+├── services/                # Servicios operativos reutilizables
+│   ├── capture_service.py   #   captura webcam -> .npy + .gif
+│   ├── training_service.py  #   entrenamiento + métricas + persistencia
+│   └── prediction_service.py #  predicción en vivo + panel de referencia
+│
+├── workflows/               # Orquestación, sesión y permisos
 │   ├── capturar.py
 │   ├── entrenar.py
 │   ├── predecir.py
@@ -68,7 +79,8 @@ Lenguaje_de_senas_python/
 ### 3.1. Captura (workflow `capturar`)
 
 ```
-Usuario  →  cámara  →  MediaPipe Holistic  →  extract_landmarks(147)
+Usuario  →  workflow capturar  →  capture_service  →  cámara
+        →  MediaPipe Holistic  →  extract_landmarks(147)
         →  normalize  →  validate  →  cuenta regresiva inicial
         →  buffer 10 frames × 10 secuencias por clase
         →  np.save(data/secuencias/<clase>/<clase>_<i>.npy)
@@ -78,7 +90,8 @@ Usuario  →  cámara  →  MediaPipe Holistic  →  extract_landmarks(147)
 ### 3.2. Entrenamiento (workflow `entrenar`)
 
 ```
-data/secuencias/*  →  cargar_datos  →  X (N, 10, 147), y (N,), etiquetas
+workflow entrenar  →  training_service  →  cargar_datos
+        →  X (N, 10, 147), y (N,), etiquetas
         →  train_test_split estratificado (70/15/15)
         →  LSTM(64, return_sequences) → BatchNorm → LSTM(32) → Dropout(0.3)
            → Dense(64, relu) → Dense(num_clases, softmax)
@@ -90,7 +103,8 @@ data/secuencias/*  →  cargar_datos  →  X (N, 10, 147), y (N,), etiquetas
 ### 3.3. Predicción (workflow `predecir`)
 
 ```
-cámara  →  Holistic  →  extract  →  normalize  →  validate
+workflow predecir  →  prediction_service  →  cámara
+        →  Holistic  →  extract  →  normalize  →  validate
         →  buffer deque(maxlen=10)
         →  cuando se llena: model.predict → idx, confianza
         →  pred_buffer deque(maxlen=3): consenso 2/3 + confianza > 0.6
@@ -137,8 +151,14 @@ Ver `docs/ROLES.md` para el detalle de cómo agregar un rol nuevo.
 
 ## 5. Decisiones de diseño clave
 
-- **Estructura por dominio funcional** (auth/core/vision/ml/workflows): facilita
-  testing y comprensión sin necesidad de paquete instalable.
+- **Estructura por dominio funcional** (auth/core/gui/vision/ml/workflows):
+  facilita testing y comprensión sin necesidad de paquete instalable.
+- **GUI separada por pantallas**: `gui_app.py` se mantiene como entrada estable,
+  mientras `gui/` concentra la aplicación Tkinter, tema, salida y módulos de
+  pantallas.
+- **Servicios operativos separados**: `services/` contiene la lógica de
+  captura, entrenamiento y predicción; `workflows/` conserva sesión, permisos y
+  orquestación de menú. Esto evita mezclar reglas de acceso con procesamiento.
 - **`core.config.config` como singleton inmutable** (`@dataclass(frozen=True)`):
   cualquier override pasa por código, no por mutación en runtime.
 - **Defense in depth**: cada workflow llama `requerir(permiso, rol)` al inicio,
