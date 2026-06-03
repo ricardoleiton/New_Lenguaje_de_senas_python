@@ -23,6 +23,9 @@ iniciales (Profesor / Estudiante), escalables por configuración.
 - ✅ Interfaz gráfica de escritorio (`gui_app.py`) y acceso Windows (`abrir_app.bat`).
 - ✅ Captura de letras, números y palabras completas.
 - ✅ Selección de cámara cuando hay más de un dispositivo instalado.
+- ✅ Vista previa de cámara para elegir el dispositivo correcto.
+- ✅ Protocolo formal de captura visible antes de grabar datos.
+- ✅ Versionado y selección de modelos entrenados.
 - ✅ Documentación técnica centralizada en `docs/`.
 - ✅ Modelo actual entrenado con 8 clases: `1`, `2`, `a`, `b`, `c`, `d`,
   `hola`, `trabajar`.
@@ -162,6 +165,7 @@ A partir del segundo arranque, la app pide login normal.
 - Seleccionar cámara
 - Capturar letra, número o palabra  # elegir tipo y valor, graba 10 secuencias
 - Entrenar modelo LSTM              # entrena con los datos disponibles
+- Seleccionar modelo                # activar una versión entrenada
 - Predicción en tiempo real
 - Gestionar usuarios                # ABM de usuarios, cambio de rol/password
 - Cambiar mi contraseña

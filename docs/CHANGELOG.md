@@ -27,6 +27,7 @@ y siguiendo [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   dispositivo correcto antes de guardar.
 - Pantalla **Seleccionar modelo** para activar una versión entrenada anterior
   desde la GUI.
+- Tests de servicio de captura para evitar regresiones en mensajes de salida.
 
 ### Cambiado
 - Captura reducida a 10 secuencias por clase y 10 frames por secuencia.

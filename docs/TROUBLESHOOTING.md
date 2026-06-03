@@ -1,6 +1,7 @@
 # Troubleshooting
 
 > Versión documentada: **0.2.0**
+> Última actualización: 2026-06-03
 
 ## Cámara
 
@@ -8,8 +9,16 @@
 
 - Verificar que ninguna otra app esté usando la cámara.
 - Desde la GUI o CLI usar **Seleccionar cámara** para probar otro dispositivo.
+- En la GUI, usar la vista previa para confirmar que la cámara muestra imagen.
 - Como último recurso, editar `core/config.py` → `CAMERA_INDEX = 1` (o 2, etc.).
 - En Linux verificar permisos de `/dev/video0`.
+
+### "La vista previa de cámara queda negra o no carga"
+
+- Presionar **Vista previa** nuevamente.
+- Probar **Detectar cámaras** y elegir otro índice.
+- Cerrar otras aplicaciones que puedan estar usando la cámara.
+- Volver al panel y entrar otra vez a **Seleccionar cámara** para liberar el dispositivo.
 
 ### "MediaPipe no detecta mis manos"
 
@@ -69,6 +78,12 @@ Para tener métricas en holdout test, capturá más muestras por clase.
 
 `EarlyStopping` corta cuando la `val_loss` no mejora durante 10 epochs. Es
 esperable y deseable. El modelo se restaura a los mejores pesos.
+
+### "Entrené varios modelos pero quiero usar uno anterior"
+
+Entrar como profesor al panel principal y abrir **Seleccionar modelo**. Elegí
+una versión de la tabla y presioná **Activar versión**. La predicción usará esa
+versión porque se copia a los artefactos activos en `models/`.
 
 ## Predicción
 

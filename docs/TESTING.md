@@ -1,7 +1,7 @@
 # Pruebas automatizadas
 
 > Versión documentada: 0.2.0  
-> Fecha de actualización: 2026-06-02
+> Fecha de actualización: 2026-06-03
 
 ## Objetivo
 
@@ -120,6 +120,13 @@ Valida el protocolo formal de captura:
 - existencia de objetivo, preparación, ejecución, calidad y repetición;
 - resumen operativo con secuencias, frames y cuenta regresiva.
 
+### `tests/test_capture_service.py`
+
+Valida funciones livianas del servicio de captura:
+
+- impresión del resumen cuando todavía no hay clases capturadas;
+- impresión del protocolo sin depender del resumen de letras, números o palabras.
+
 ## Qué no cubre todavía
 
 Esta primera suite no cubre:
@@ -146,6 +153,7 @@ Prioridad sugerida:
 4. Tests adicionales de GUI para validaciones puras, sin abrir ventanas reales.
 5. Tests de entrenamiento con dataset mínimo y epochs reducidos.
 6. Tests de predicción con modelo simulado.
+7. Tests de selección de cámara con mock de preview.
 
 ## Criterio de aceptación actual
 

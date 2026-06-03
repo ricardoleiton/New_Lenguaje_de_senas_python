@@ -7,7 +7,8 @@
 >
 > **Nota:** este documento es histórico. Describe el estado inicial relevado y
 > puede mencionar datos ya superados por la evolución del proyecto: GUI,
-> selección de cámara, captura 10×10, palabras completas y modelo reentrenado.
+> selección de cámara, captura 10×10, palabras completas, servicios separados,
+> tests automatizados, versionado/selección de modelos y modelo reentrenado.
 
 ## 0. Metodología
 

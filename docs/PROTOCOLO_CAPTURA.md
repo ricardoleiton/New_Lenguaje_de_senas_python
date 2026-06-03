@@ -3,7 +3,7 @@
 > Proyecto: Lengua de Señas - Holistic Unificado  
 > Autor: Ricardo Leitón  
 > Versión documentada: 0.2.0  
-> Fecha de actualización: 2026-06-02
+> Fecha de actualización: 2026-06-03
 
 ## 1. Objetivo
 

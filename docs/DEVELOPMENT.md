@@ -81,12 +81,15 @@ Ubicación:
 
 ```
 tests/
-├── test_landmarks.py
-├── test_rbac.py
-├── test_users.py
+├── test_capture_protocol.py
+├── test_capture_service.py
 ├── test_data_io.py
 ├── test_gui_structure.py
-└── test_services_structure.py
+├── test_landmarks.py
+├── test_model_registry.py
+├── test_rbac.py
+├── test_services_structure.py
+└── test_users.py
 ```
 
 Ejecución:

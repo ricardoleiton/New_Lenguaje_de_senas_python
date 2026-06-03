@@ -1,14 +1,16 @@
 # Seguridad
 
 > Versión documentada: **0.2.0**
+> Última actualización: 2026-06-03
 
 ## 1. Modelo de amenazas
 
 La aplicación corre **localmente** en la PC del usuario. El modelo de amenazas
 es acotado:
 
-- **Activos protegidos**: el dataset de secuencias, el modelo entrenado, los
-  GIFs de referencia, los hashes de password de los usuarios.
+- **Activos protegidos**: el dataset de secuencias, el modelo entrenado, las
+  versiones históricas de modelos, los GIFs de referencia y los hashes de
+  password de los usuarios.
 - **Atacantes considerados**: usuarios no autorizados con acceso físico al
   equipo o que comparten la instalación. Por ejemplo, un estudiante que no
   debe poder reentrenar el modelo.

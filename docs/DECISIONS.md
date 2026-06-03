@@ -5,7 +5,7 @@
 
 ---
 
-## ADR-001 — Estructura por dominio funcional (auth/core/vision/ml/workflows)
+## ADR-001 — Estructura por dominio funcional (auth/core/gui/services/vision/ml/workflows)
 
 **Estado:** Aceptado en v0.2.0
 
@@ -17,9 +17,11 @@ sumar el sistema de roles, el archivo `utils.py` se hubiera vuelto inmanejable.
 
 - `auth/` para autenticación, RBAC, sesión, audit
 - `core/` para configuración y procesamiento de landmarks
+- `gui/` para interfaz Tkinter, pantallas, tema y salida
+- `services/` para captura, entrenamiento, predicción, protocolo y modelos
 - `vision/` para cámara y dibujo
 - `ml/` para modelo y dataset
-- `workflows/` para flujos de uso
+- `workflows/` para sesión, permisos y orquestación de uso
 
 **Alternativas descartadas.**
 
@@ -163,3 +165,67 @@ pedir al usuario que cree un profesor inicial.
 - Usuario `admin/admin123` precargado: inseguro si se olvida cambiar.
 
 **Consecuencias.** Bajar la app, ejecutarla, crear profesor. Una sola pasada.
+
+---
+
+## ADR-009 — GUI modular por pantallas
+
+**Estado:** Aceptado en v0.2.0
+
+**Contexto.** La GUI creció desde login/panel hacia cámara, captura,
+entrenamiento, predicción, usuarios, contraseña y selección de modelos. Mantener
+todo en `gui_app.py` dificultaba lectura y mantenimiento.
+
+**Decisión.** Mantener `gui_app.py` como entrada estable y mover la
+implementación a `gui/`, con `gui/app.py`, `gui/theme.py`, `gui/output.py` y
+mixins de pantalla en `gui/screens/`.
+
+**Consecuencias.** El launcher existente sigue funcionando, pero cada pantalla
+puede evolucionar de forma más aislada.
+
+---
+
+## ADR-010 — Workflows como capa de permisos y servicios como capa operativa
+
+**Estado:** Aceptado en v0.2.0
+
+**Contexto.** Captura, entrenamiento y predicción eran workflows completos:
+mezclaban sesión, permisos, UI de consola y lógica operativa.
+
+**Decisión.** Dejar `workflows/` como capa de sesión/permisos y delegar la
+ejecución a `services/`.
+
+**Consecuencias.** La GUI y CLI reutilizan la misma lógica, y los servicios
+pueden testearse sin abrir el menú ni duplicar validaciones de rol.
+
+---
+
+## ADR-011 — Versionado y activación explícita de modelos
+
+**Estado:** Aceptado en v0.2.0
+
+**Contexto.** Sobrescribir siempre `models/modelo_lstm.h5` impedía comparar o
+volver a un entrenamiento anterior.
+
+**Decisión.** Cada entrenamiento exitoso conserva los artefactos activos y
+guarda una copia en `models/versions/<timestamp>/` con `metadata.json`. La GUI
+permite activar una versión histórica copiándola a los artefactos activos.
+
+**Consecuencias.** Predicción sigue usando rutas simples y estables, mientras
+el profesor puede volver a un modelo anterior si uno nuevo funciona peor.
+
+---
+
+## ADR-012 — Protocolo formal de captura visible en GUI/CLI
+
+**Estado:** Aceptado en v0.2.0
+
+**Contexto.** La precisión del modelo depende fuertemente de la calidad del
+dataset. Sin criterios explícitos, cada captura podía variar demasiado.
+
+**Decisión.** Centralizar el protocolo en `services.capture_protocol`, mostrar
+un resumen en la GUI/CLI y documentar el procedimiento completo en
+`docs/PROTOCOLO_CAPTURA.md`.
+
+**Consecuencias.** El usuario ve reglas operativas antes de capturar y el
+proyecto tiene una referencia formal para evaluar calidad de dataset.

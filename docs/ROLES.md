@@ -1,6 +1,7 @@
 # Roles y permisos
 
 > Versión documentada: **0.2.0**
+> Última actualización: 2026-06-03
 
 ## 1. Roles incluidos
 
@@ -15,7 +16,7 @@
 |----------------------|---------------------------------------------------|
 | `predecir`           | Workflow de predicción en vivo                    |
 | `capturar`           | Grabar letras, números o palabras para el dataset |
-| `entrenar`           | Reentrenar el modelo LSTM                         |
+| `entrenar`           | Reentrenar el modelo LSTM y activar versiones entrenadas |
 | `gestionar_usuarios` | Submenú de alta/baja/edición de usuarios          |
 
 ## 3. Cómo agregar un rol nuevo (sin tocar código)

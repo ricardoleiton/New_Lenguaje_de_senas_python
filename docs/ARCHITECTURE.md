@@ -1,7 +1,7 @@
 # Arquitectura
 
 > Versión documentada: **0.2.0**
-> Última actualización: 2026-05-01
+> Última actualización: 2026-06-03
 
 ## 1. Visión general
 
@@ -42,7 +42,7 @@ Lenguaje_de_senas_python/
 │   ├── app.py               #   App principal + helpers de layout
 │   ├── theme.py             #   colores, tipografía y estilos ttk
 │   ├── output.py            #   redirección stdout/stderr al panel GUI
-│   └── screens/             #   auth, dashboard, cámara, captura, procesos, usuarios
+│   └── screens/             #   auth, dashboard, cámara, captura, procesos, modelos, usuarios
 │
 ├── vision/                  # Cámara + dibujo + GIF + overlays
 │   ├── camera.py
@@ -120,7 +120,7 @@ guardada. El panel de referencia permanece vacío hasta que se detecta una clase
 Si existe `latest_model_version.json`, la predicción informa la versión activa
 del modelo cargado.
 
-### 3.6. Selección de modelo activo
+### 3.4. Selección de modelo activo
 
 ```
 GUI profesor  →  list_model_versions()
@@ -130,14 +130,15 @@ GUI profesor  →  list_model_versions()
               →  update latest_model_version.json
 ```
 
-### 3.4. Selección de cámara
+### 3.5. Selección de cámara
 
 ```
-GUI/CLI  →  discover_cameras()  →  set_selected_camera_index(index)
+GUI/CLI  →  discover_cameras()  →  vista previa de cámara
+        →  set_selected_camera_index(index)
         →  setup_camera() usa el índice seleccionado en captura/predicción
 ```
 
-### 3.5. Autenticación
+### 3.6. Autenticación
 
 ```
 main.py
@@ -155,7 +156,7 @@ main.py
 |----------------------|----------------------------------------------|
 | `predecir`           | Ejecutar predicción en tiempo real           |
 | `capturar`           | Grabar nuevas secuencias para alimentar el dataset |
-| `entrenar`           | Reentrenar el modelo con el dataset actual   |
+| `entrenar`           | Reentrenar el modelo y activar versiones entrenadas |
 | `gestionar_usuarios` | Listar/crear/eliminar/cambiar rol de usuarios |
 
 | Rol         | Permisos                                                      |
@@ -167,7 +168,7 @@ Ver `docs/ROLES.md` para el detalle de cómo agregar un rol nuevo.
 
 ## 5. Decisiones de diseño clave
 
-- **Estructura por dominio funcional** (auth/core/gui/vision/ml/workflows):
+- **Estructura por dominio funcional** (auth/core/gui/services/vision/ml/workflows):
   facilita testing y comprensión sin necesidad de paquete instalable.
 - **GUI separada por pantallas**: `gui_app.py` se mantiene como entrada estable,
   mientras `gui/` concentra la aplicación Tkinter, tema, salida y módulos de

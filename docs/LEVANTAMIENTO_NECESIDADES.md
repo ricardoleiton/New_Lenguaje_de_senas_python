@@ -3,7 +3,7 @@
 > Proyecto: Lengua de Señas - Holistic Unificado  
 > Autor: Ricardo Leitón  
 > Versión documentada: 0.2.0  
-> Fecha de actualización: 2026-06-02
+> Fecha de actualización: 2026-06-03
 
 ## 1. Necesidad del usuario
 
@@ -177,6 +177,7 @@ El alcance actual incluye:
 - Predicción en tiempo real.
 - Doble ventana en predicción: cámara y referencia.
 - Selección de cámara.
+- Vista previa de cámara antes de guardar selección.
 - Auditoría local.
 - Documentación técnica.
 
@@ -369,6 +370,7 @@ El proyecto ya cuenta con una implementación funcional que cubre el flujo princ
 - Login y roles.
 - Captura de letras, números y palabras.
 - Selección de cámara.
+- Vista previa de cámara en la selección.
 - Cuenta regresiva inicial.
 - Dataset local.
 - Entrenamiento LSTM.
@@ -382,7 +384,6 @@ El proyecto ya cuenta con una implementación funcional que cubre el flujo princ
 
 - Agregar pruebas automatizadas.
 - Diseñar modo de frase acumulada.
-- Definir un protocolo formal de captura de dataset.
 - Ampliar el dataset con más señantes y condiciones de luz/fondo.
 - Evaluar reducción de features si el alcance se concentra en letras/números.
 - Empaquetar como aplicación instalable.
